@@ -35,6 +35,11 @@
         //Llamada post al backend usando jquery.
         console.log("Objeto enviado por POST: " );
         console.log(body_object);
+        
+        $.post("http://localhost:3000/alumnos", JSON.stringify(body_object) , 
+        function(){
+            alert("Alumno guardado.");
+        });
     }
 
 </script>
