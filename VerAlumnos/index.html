@@ -6,19 +6,42 @@
     <title>Pagina de prueba</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
 </head>
 <body>
-    <h3>Ejercicio Node, Express, Jquery</h3>
+        <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="img/caret.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+            Tecnolog&iacute;as Inform&aacute;ticas
+        </a>
+        </nav>
+    <div class="container">
+    <h3 class="display-3">Ejercicio Node, Express, Jquery</h3>
     <form action="">
         <input type="text" placeholder="Nombre" name="nombre" id="nombre">
         <input type="text" placeholder="Clave" name="clave" id="clave">
-        <button id="act" type="button"> Enviar </button>
+        <button id="act" type="button"> Agregar </button>
     </form>
+
+    <div>
+        <h4> Lista de Alumnos </h4>
+        <ul id="lista-alumnos" class="list-group">
+
+        </ul>
+    </div>
+
+</div>
 </body>
 
 <script>
     //cunado el documento este listo y todos los objetos 
     $(document).ready( function(){
+
+        //Una vez que este listo el documento obtendremos la lista de alumnos y la mostraremos.
+        getAlumnos();
+
         //Programacion del boton act para obtener datos del input.
         $("#act").on("click", function(event){
             console.log(event);
@@ -31,6 +54,21 @@
 
     });
 
+    function getAlumnos(){
+        //LLamada GET para obtener los alumnos
+        //Se muestra resultado con una lista en HTML
+        //Se utiliza un ciclo for y se genera el codigo HTML
+        //Usando Jquery se coloca el HTML en la lista.
+        $.get("http://localhost:3000/alumnos", function(data){
+            var listHTML = "";
+            console.log(data);
+            data.forEach(alumno => {
+                listHTML += "<li class='list-group-item'> Clave : " + alumno.clave + " | Nombre: " + alumno.nombre + "</li>";
+            });
+            $("#lista-alumnos").html(listHTML);
+        });
+    }
+
     function sendPOSTRequest(body_object){
         //Llamada post al backend usando jquery.
         //console.log("Objeto enviado por POST: " );
@@ -39,6 +77,8 @@
         $.post("http://localhost:3000/alumnos", body_object , 
         function(){
             alert("Alumno guardado.");
+            //Actualizamos la lista html para ver los cambios.
+            getAlumnos();
         });
     }
 
